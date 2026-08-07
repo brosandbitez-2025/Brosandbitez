@@ -731,10 +731,20 @@ export function UnifiedMenuManager() {
                       </button>
                     </div>
                     <div className="flex items-center gap-1 bg-background/50 rounded-full p-1 border border-border/50">
-                      <ActionMenu 
-                        onEdit={() => handleEditCategory(category)}
-                        onDelete={() => confirmDeleteCategory(category.id, category.imageUrl)}
-                      />
+                      <button
+                        onClick={(e) => { e.stopPropagation(); handleEditCategory(category); }}
+                        className="h-8 w-8 rounded-full flex items-center justify-center hover:bg-blue-500/10 text-muted-foreground hover:text-blue-500 transition-colors"
+                        title="Edit Category"
+                      >
+                        <Edit2 className="h-4 w-4" />
+                      </button>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); confirmDeleteCategory(category.id, category.imageUrl); }}
+                        className="h-8 w-8 rounded-full flex items-center justify-center hover:bg-red-500/10 text-muted-foreground hover:text-red-500 transition-colors"
+                        title="Delete Category"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
                       <div className="h-6 w-px bg-border mx-1"></div>
                       <div className="pr-1 pl-0.5 cursor-pointer" onClick={() => toggleCategory(category.id)}>
                         <ChevronDown className={`h-5 w-5 text-muted-foreground transition-transform duration-300 ${isExpanded ? "rotate-180 text-primary" : ""}`} />
@@ -799,12 +809,21 @@ export function UnifiedMenuManager() {
                                           <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${item.isAvailable !== false ? 'translate-x-[18px]' : 'translate-x-0.5'}`} />
                                         </button>
                                       </div>
-                                      <div className="-mr-2">
-                                        <ActionMenu 
-                                          size="small"
-                                          onEdit={() => handleEditItem(item)}
-                                          onDelete={() => confirmDeleteItem(item.id, item.image)}
-                                        />
+                                      <div className="flex items-center gap-1 -mr-2">
+                                        <button
+                                          onClick={(e) => { e.stopPropagation(); handleEditItem(item); }}
+                                          className="h-8 w-8 rounded-full flex items-center justify-center hover:bg-blue-500/10 text-muted-foreground hover:text-blue-500 transition-colors"
+                                          title="Edit Item"
+                                        >
+                                          <Edit2 className="h-4 w-4" />
+                                        </button>
+                                        <button
+                                          onClick={(e) => { e.stopPropagation(); confirmDeleteItem(item.id, item.image); }}
+                                          className="h-8 w-8 rounded-full flex items-center justify-center hover:bg-red-500/10 text-muted-foreground hover:text-red-500 transition-colors"
+                                          title="Delete Item"
+                                        >
+                                          <Trash2 className="h-4 w-4" />
+                                        </button>
                                       </div>
                                     </div>
                                   </div>
@@ -868,12 +887,21 @@ export function UnifiedMenuManager() {
                               <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${item.isAvailable !== false ? 'translate-x-[18px]' : 'translate-x-0.5'}`} />
                             </button>
                           </div>
-                          <div className="-mr-2">
-                            <ActionMenu 
-                              size="small"
-                              onEdit={() => handleEditItem(item)}
-                              onDelete={() => confirmDeleteItem(item.id, item.image)}
-                            />
+                          <div className="flex items-center gap-1 -mr-2">
+                            <button
+                              onClick={(e) => { e.stopPropagation(); handleEditItem(item); }}
+                              className="h-8 w-8 rounded-full flex items-center justify-center hover:bg-blue-500/10 text-muted-foreground hover:text-blue-500 transition-colors"
+                              title="Edit Item"
+                            >
+                              <Edit2 className="h-4 w-4" />
+                            </button>
+                            <button
+                              onClick={(e) => { e.stopPropagation(); confirmDeleteItem(item.id, item.image); }}
+                              className="h-8 w-8 rounded-full flex items-center justify-center hover:bg-red-500/10 text-muted-foreground hover:text-red-500 transition-colors"
+                              title="Delete Item"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </button>
                           </div>
                         </div>
                       </div>
