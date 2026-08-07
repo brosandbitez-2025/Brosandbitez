@@ -7,11 +7,7 @@ import { ShoppingCart, Trash2, ArrowRight, MessageCircle } from "lucide-react";
 import { useCartStore } from "@/store/cartStore";
 import Link from "next/link";
 import { doc, getDoc } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { db, storage } from "@/lib/firebase/config";
-import imageCompression from "browser-image-compression";
-import { Camera, X } from "lucide-react";
-
+import { db } from "@/lib/firebase/config";
 export default function CartPage() {
   const { items, removeItem, updateQuantity, getTotalPrice, clearCart } = useCartStore();
   const totalPrice = getTotalPrice();
@@ -24,8 +20,6 @@ export default function CartPage() {
   const [addressHouse, setAddressHouse] = React.useState("");
   const [addressStreet, setAddressStreet] = React.useState("");
   const [addressArea, setAddressArea] = React.useState("");
-  
-  const [locationPhotos, setLocationPhotos] = React.useState<File[]>([]);
 
   const isFormValid = customerName.trim() !== "" && customerPhone.trim() !== "" && addressHouse.trim() !== "" && addressStreet.trim() !== "" && addressArea.trim() !== "";
 
@@ -43,23 +37,6 @@ export default function CartPage() {
     };
     fetchWhatsAppNumber();
   }, []);
-
-  const handlePhotoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const selected = Array.from(e.target.files);
-      const remainingSlots = 3 - locationPhotos.length;
-      if (selected.length > remainingSlots) {
-        alert(`You can only add up to 3 photos. You can add ${remainingSlots} more.`);
-        setLocationPhotos(prev => [...prev, ...selected.slice(0, remainingSlots)]);
-      } else {
-        setLocationPhotos(prev => [...prev, ...selected]);
-      }
-    }
-  };
-
-  const removePhoto = (index: number) => {
-    setLocationPhotos(prev => prev.filter((_, i) => i !== index));
-  };
 
   const handleWhatsAppCheckout = async () => {
     if (!whatsappNumber) {
@@ -81,36 +58,6 @@ export default function CartPage() {
     orderText += `Name: ${customerName}\n`;
     orderText += `Phone: ${customerPhone}\n`;
     orderText += `Address:\n${addressHouse}\n${addressStreet}\n${addressArea}\n\n`;
-
-    if (locationPhotos.length > 0) {
-      orderText += `*Location Photos:*\n`;
-      try {
-        const uploadPromises = locationPhotos.map(async (file, index) => {
-          const options = {
-            maxSizeMB: 0.5,
-            maxWidthOrHeight: 1200,
-            useWebWorker: true,
-          };
-          const compressedFile = await imageCompression(file, options);
-          const timestamp = Date.now();
-          const randomStr = Math.random().toString(36).substring(2, 8);
-          const storageRef = ref(storage, `customer-location-photos/${timestamp}_${randomStr}_${index}.jpg`);
-          
-          await uploadBytes(storageRef, compressedFile);
-          const downloadURL = await getDownloadURL(storageRef);
-          return downloadURL;
-        });
-
-        const urls = await Promise.all(uploadPromises);
-        urls.forEach((url, i) => {
-          orderText += `Photo ${i + 1}: ${url}\n`;
-        });
-        orderText += `\n`;
-      } catch (error) {
-        console.error("Error uploading photos:", error);
-        alert("Failed to upload photos. Proceeding without them.");
-      }
-    }
 
     orderText += `*Order Items:*\n`;
     items.forEach((item) => {
@@ -251,58 +198,6 @@ export default function CartPage() {
             onChange={(e) => setAddressArea(e.target.value)}
             className="w-full bg-background border border-border/50 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
-        </div>
-      </div>
-
-      <div className="mt-8 glass-card p-6 rounded-3xl space-y-4">
-        <div className="flex justify-between items-start">
-          <div>
-            <h3 className="font-bold text-lg mb-1">Location Photos</h3>
-            <p className="text-sm text-muted-foreground">Help us find your delivery location (Max 3, Optional)</p>
-          </div>
-        </div>
-        
-        <div className="space-y-4">
-          {locationPhotos.length > 0 && (
-            <div className="flex flex-wrap gap-3">
-              {locationPhotos.map((file, index) => (
-                <div key={index} className="relative h-20 w-20 rounded-xl overflow-hidden bg-secondary border border-border/50 shadow-sm">
-                  <Image 
-                    src={URL.createObjectURL(file)} 
-                    alt="Location" 
-                    fill 
-                    className="object-cover"
-                  />
-                  <button 
-                    onClick={() => removePhoto(index)}
-                    className="absolute top-1 right-1 h-6 w-6 bg-black/50 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-red-500 transition-colors"
-                  >
-                    <X className="h-3 w-3" />
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {locationPhotos.length < 3 && (
-            <div>
-              <input 
-                type="file" 
-                id="location-photos" 
-                accept="image/*"
-                multiple
-                onChange={handlePhotoSelect}
-                className="hidden"
-              />
-              <label 
-                htmlFor="location-photos"
-                className="inline-flex items-center gap-2 bg-secondary text-foreground font-semibold px-4 py-3 rounded-xl cursor-pointer hover:bg-secondary/80 transition-colors border border-border/50 shadow-sm"
-              >
-                <Camera className="h-5 w-5" />
-                Add Photos
-              </label>
-            </div>
-          )}
         </div>
       </div>
 
