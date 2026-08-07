@@ -311,9 +311,13 @@ export default function CartPage() {
           <span>Subtotal</span>
           <span className="font-medium text-foreground">₹{totalPrice.toFixed(2)}</span>
         </div>
-        <div className="flex justify-between items-center text-muted-foreground border-b border-border/50 pb-4">
+        <div className="flex justify-between items-center text-muted-foreground">
           <span>Taxes</span>
           <span className="font-medium text-foreground">Calculated by restaurant</span>
+        </div>
+        <div className="flex justify-between items-center text-muted-foreground border-b border-border/50 pb-4 pt-4">
+          <span>Delivery Fee</span>
+          <span className="font-medium text-foreground text-right text-sm">Calculated based on distance</span>
         </div>
         <div className="flex justify-between items-center pt-2">
           <span className="text-xl font-bold">Total</span>
