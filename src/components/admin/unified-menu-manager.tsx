@@ -701,27 +701,25 @@ export function UnifiedMenuManager() {
                 style={{ zIndex: categories.length - index }}
               >
                 <div 
-                  className={`flex items-center justify-between bg-secondary/20 p-3 sm:p-4 transition-colors ${isExpanded ? 'rounded-t-3xl' : 'rounded-3xl'} gap-2`}
+                  className={`flex flex-col sm:flex-row sm:items-center justify-between bg-secondary/20 p-3 sm:p-4 transition-colors ${isExpanded ? 'rounded-t-3xl' : 'rounded-3xl'} gap-3 sm:gap-2`}
                 >
-                  <div className="flex items-center gap-3 min-w-0 flex-1">
-                    <div className="cursor-grab hover:bg-secondary p-1 rounded transition-colors active:cursor-grabbing" style={{ pointerEvents: 'auto' }}>
+                  <div className="flex items-start sm:items-center gap-3 min-w-0 flex-1 w-full">
+                    <div className="cursor-grab hover:bg-secondary p-1 rounded transition-colors active:cursor-grabbing mt-1 sm:mt-0" style={{ pointerEvents: 'auto' }}>
                       <GripVertical className="h-5 w-5 text-muted-foreground" />
                     </div>
-                    <div className="relative h-12 w-12 bg-secondary rounded-xl overflow-hidden flex-shrink-0" onClick={() => toggleCategory(category.id)}>
+                    <div className="relative h-12 w-12 bg-secondary rounded-xl overflow-hidden flex-shrink-0 cursor-pointer" onClick={() => toggleCategory(category.id)}>
                       {category.imageUrl ? (
                         <Image src={category.imageUrl} alt={category.name} fill className="object-cover" />
                       ) : (
                         <ImageIcon className="h-6 w-6 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-muted-foreground" />
                       )}
                     </div>
-                    <div className="min-w-0 flex-1" onClick={() => toggleCategory(category.id)}>
-                      <div className="flex flex-wrap items-center gap-2">
-                        <h3 className="text-lg sm:text-xl font-black truncate">{category.name}</h3>
-                      </div>
-                      <p className="text-sm text-muted-foreground whitespace-nowrap">{categoryItems.length} items</p>
+                    <div className="min-w-0 flex-1 cursor-pointer" onClick={() => toggleCategory(category.id)}>
+                      <h3 className="text-lg sm:text-xl font-black break-words leading-tight">{category.name}</h3>
+                      <p className="text-sm text-muted-foreground mt-0.5">{categoryItems.length} items</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0 ml-2">
+                  <div className="flex items-center justify-end gap-2 sm:gap-4 flex-shrink-0 ml-12 sm:ml-2">
                     <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
                       <button
                         onClick={(e) => toggleCategoryAvailability(e, category.id, category.isAvailable !== false)}
@@ -793,12 +791,12 @@ export function UnifiedMenuManager() {
                                 </div>
                                 <div className="flex-1 min-w-0 flex flex-col justify-between py-1">
                                   <div>
-                                    <h3 className="font-bold text-base leading-tight truncate">{item.name}</h3>
+                                    <h3 className="font-bold text-base leading-tight break-words">{item.name}</h3>
                                     {item.isAvailable === false && (
                                       <span className="bg-red-100 text-red-600 text-[10px] font-bold px-2 py-0.5 rounded-full mt-1 inline-block">Sold Out</span>
                                     )}
                                   </div>
-                                  <div className="flex items-center justify-between mt-2">
+                                  <div className="flex flex-wrap items-center justify-between mt-2 gap-2">
                                     <span className="font-black text-primary">₹{item.price}</span>
                                     <div className="flex items-center gap-3">
                                       <div className="flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
@@ -874,9 +872,9 @@ export function UnifiedMenuManager() {
                     </div>
                     <div className="flex-1 min-w-0 flex flex-col justify-between py-1">
                       <div>
-                        <h3 className="font-bold text-base leading-tight truncate">{item.name}</h3>
+                        <h3 className="font-bold text-base leading-tight break-words">{item.name}</h3>
                       </div>
-                      <div className="flex items-center justify-between mt-2">
+                      <div className="flex flex-wrap items-center justify-between mt-2 gap-2">
                         <span className="font-black text-primary">₹{item.price}</span>
                         <div className="flex items-center gap-3">
                           <div className="flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
