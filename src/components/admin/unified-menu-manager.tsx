@@ -688,7 +688,7 @@ export function UnifiedMenuManager() {
           >
             {categories
               .filter((category) => category.id !== editingCatId)
-              .map((category) => {
+              .map((category, index) => {
             const categoryItems = items.filter(item => item.categoryId === category.id && item.id !== editingItemId).sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
             const isExpanded = !!expandedCategories[category.id];
             
@@ -696,8 +696,9 @@ export function UnifiedMenuManager() {
               <Reorder.Item 
                 key={category.id} 
                 value={category}
-                className="space-y-4 bg-background border border-border rounded-3xl shadow-sm"
+                className="space-y-4 bg-background border border-border rounded-3xl shadow-sm relative"
                 dragListener={!isFormOpen}
+                style={{ zIndex: categories.length - index }}
               >
                 <div 
                   className={`flex items-center justify-between bg-secondary/20 p-3 sm:p-4 transition-colors ${isExpanded ? 'rounded-t-3xl' : 'rounded-3xl'} gap-2`}
@@ -759,12 +760,13 @@ export function UnifiedMenuManager() {
                             onReorder={(newOrder) => handleReorderItems(newOrder, category.id)}
                             className="grid grid-cols-1 gap-4"
                           >
-                            {categoryItems.map((item) => (
+                            {categoryItems.map((item, index) => (
                               <Reorder.Item 
                                 key={item.id} 
                                 value={item}
                                 className="glass-card p-4 rounded-2xl flex gap-4 group border border-border/50 relative"
                                 dragListener={!isFormOpen}
+                                style={{ zIndex: categoryItems.length - index }}
                               >
                                 <div className="cursor-grab self-center hover:bg-secondary p-1 rounded transition-colors active:cursor-grabbing mr-1">
                                   <GripVertical className="h-5 w-5 text-muted-foreground" />
