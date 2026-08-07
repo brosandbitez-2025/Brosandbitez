@@ -3,12 +3,12 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, ShoppingCart, Tag, Phone } from "lucide-react";
+import { UtensilsCrossed, ShoppingCart, Tag, Phone } from "lucide-react";
 import { useCartStore } from "@/store/cartStore";
 import { motion } from "framer-motion";
 
 const navItems = [
-  { name: "Home", href: "/", icon: Home },
+  { name: "Menu", href: "/", icon: UtensilsCrossed },
   { name: "Cart", href: "/cart", icon: ShoppingCart },
   { name: "Offers", href: "/offers", icon: Tag },
   { name: "Contact", href: "/contact", icon: Phone },
