@@ -10,6 +10,7 @@ interface Category {
   id: string;
   name: string;
   imageUrl: string;
+  sortOrder?: number;
 }
 
 interface CategoryListProps {
