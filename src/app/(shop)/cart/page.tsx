@@ -319,6 +319,11 @@ export default function CartPage() {
           <span className="text-xl font-bold">Total</span>
           <span className="text-2xl font-black text-primary">₹{totalPrice.toFixed(2)}</span>
         </div>
+        <div className="mt-4 p-4 bg-primary/10 border border-primary/20 rounded-2xl">
+          <p className="text-sm font-medium text-foreground text-center">
+            <span className="text-primary font-bold">Important Note:</span> For lightning-fast preparation, please give us a quick call to confirm after sending your order via WhatsApp!
+          </p>
+        </div>
       </div>
 
       {/* Checkout Button - Fixed Bottom */}
