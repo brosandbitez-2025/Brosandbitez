@@ -317,10 +317,13 @@ export default function CartPage() {
         </div>
         <div className="flex justify-between items-center text-muted-foreground border-b border-border/50 pb-4 pt-4">
           <span>Delivery Fee</span>
-          <span className="font-medium text-foreground text-right text-sm">Calculated based on distance</span>
+          <span className="font-medium text-foreground text-right text-sm">Added extra based on distance</span>
         </div>
         <div className="flex justify-between items-center pt-2">
-          <span className="text-xl font-bold">Total</span>
+          <div className="flex flex-col">
+            <span className="text-xl font-bold">Total</span>
+            <span className="text-xs text-muted-foreground font-medium">+ Delivery fee will be added extra</span>
+          </div>
           <span className="text-2xl font-black text-primary">₹{totalPrice.toFixed(2)}</span>
         </div>
         <div className="mt-4 p-4 bg-primary/10 border border-primary/20 rounded-2xl">
