@@ -330,6 +330,9 @@ export default function CartPage() {
           <p className="text-sm font-medium text-foreground text-center">
             <span className="text-primary font-bold">Important Note:</span> For lightning-fast preparation, please give us a quick call to confirm after sending your order via WhatsApp!
           </p>
+          <p className="text-sm font-medium text-muted-foreground text-center mt-2">
+            *Please note: The total shown above does not include delivery charges. Your final grand total will be provided upon confirmation.
+          </p>
         </div>
       </div>
 
