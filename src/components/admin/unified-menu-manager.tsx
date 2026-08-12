@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Plus, Edit2, Trash2, Upload, Loader2, Image as ImageIcon, ChevronDown, MoreVertical, GripVertical } from "lucide-react";
+import { Plus, Edit2, Trash2, Upload, Loader2, Image as ImageIcon, ChevronDown, MoreVertical, GripVertical, X } from "lucide-react";
 import { collection, getDocs, addDoc, deleteDoc, doc, updateDoc, writeBatch } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 import { db, storage } from "@/lib/firebase/config";
@@ -30,6 +30,7 @@ interface MenuItem {
   isBestSeller?: boolean;
   isAvailable?: boolean;
   sortOrder?: number;
+  addons?: { name: string, price: number }[];
 }
 
 const withTimeout = <T,>(promise: Promise<T>, ms = 8000) => {
@@ -70,6 +71,9 @@ export function UnifiedMenuManager() {
   const [itemBestSeller, setItemBestSeller] = React.useState(false);
   const [itemAvailable, setItemAvailable] = React.useState(true);
   const [isUploadingItem, setIsUploadingItem] = React.useState(false);
+  const [itemAddons, setItemAddons] = React.useState<{name: string, price: number}[]>([]);
+  const [newAddonName, setNewAddonName] = React.useState("");
+  const [newAddonPrice, setNewAddonPrice] = React.useState("");
   
   // --- Accordion State ---
   const [expandedCategories, setExpandedCategories] = React.useState<Record<string, boolean>>({});
@@ -318,7 +322,8 @@ export function UnifiedMenuManager() {
           isNonVeg: itemNonVeg,
           isEgg: itemEgg,
           isBestSeller: itemBestSeller,
-          isAvailable: itemAvailable
+          isAvailable: itemAvailable,
+          addons: itemAddons
         }));
       } else {
         await withTimeout(addDoc(collection(db, "menuItems"), {
@@ -332,7 +337,8 @@ export function UnifiedMenuManager() {
           isEgg: itemEgg,
           isBestSeller: itemBestSeller,
           isAvailable: itemAvailable,
-          sortOrder: items.filter(i => i.categoryId === itemCategoryId).length
+          sortOrder: items.filter(i => i.categoryId === itemCategoryId).length,
+          addons: itemAddons
         }));
       }
       
@@ -348,6 +354,7 @@ export function UnifiedMenuManager() {
       setItemEgg(false);
       setItemBestSeller(false);
       setItemAvailable(true);
+      setItemAddons([]);
       setIsAddingItem(false);
       setEditingItemId(null);
       
@@ -374,6 +381,7 @@ export function UnifiedMenuManager() {
     setItemEgg(item.isEgg || false);
     setItemBestSeller(item.isBestSeller || false);
     setItemAvailable(item.isAvailable !== false);
+    setItemAddons(item.addons || []);
     setIsAddingItem(true);
     setIsAddingCategory(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -450,6 +458,9 @@ export function UnifiedMenuManager() {
                 setItemVeg(false);
                 setItemBestSeller(false);
                 setItemAvailable(true);
+                setItemAddons([]);
+                setNewAddonName("");
+                setNewAddonPrice("");
               }
             }}
             className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-primary text-black font-bold px-5 py-2.5 rounded-xl hover:scale-105 active:scale-95 transition-transform whitespace-nowrap"
@@ -604,6 +615,61 @@ export function UnifiedMenuManager() {
                       placeholder="Describe the item..."
                       className="w-full h-24 p-4 rounded-xl bg-background border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none resize-none"
                     />
+                  </div>
+
+                  <div className="space-y-4 pt-4 border-t border-border">
+                    <label className="text-sm font-bold block">Add-Ons</label>
+                    
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={newAddonName}
+                        onChange={(e) => setNewAddonName(e.target.value)}
+                        placeholder="Add-on Name (e.g. Extra Cheese)"
+                        className="flex-1 h-12 px-4 rounded-xl bg-background border border-border focus:border-primary focus:ring-1 outline-none text-sm"
+                      />
+                      <input
+                        type="number"
+                        step="0.01"
+                        value={newAddonPrice}
+                        onChange={(e) => setNewAddonPrice(e.target.value)}
+                        placeholder="Price (₹)"
+                        className="w-24 h-12 px-4 rounded-xl bg-background border border-border focus:border-primary focus:ring-1 outline-none text-sm"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (newAddonName.trim() && newAddonPrice) {
+                            setItemAddons([...itemAddons, { name: newAddonName.trim(), price: parseFloat(newAddonPrice) }]);
+                            setNewAddonName("");
+                            setNewAddonPrice("");
+                          }
+                        }}
+                        className="px-5 py-2 bg-primary text-black font-bold rounded-xl hover:scale-105 active:scale-95 transition-transform whitespace-nowrap"
+                      >
+                        Add
+                      </button>
+                    </div>
+
+                    {itemAddons.length > 0 && (
+                      <div className="space-y-2">
+                        {itemAddons.map((addon, idx) => (
+                          <div key={idx} className="flex justify-between items-center bg-secondary/30 p-3 rounded-xl border border-border/50">
+                            <span className="text-sm font-medium">{addon.name}</span>
+                            <div className="flex items-center gap-3">
+                              <span className="text-sm font-bold">₹{addon.price.toFixed(2)}</span>
+                              <button
+                                type="button"
+                                onClick={() => setItemAddons(itemAddons.filter((_, i) => i !== idx))}
+                                className="text-red-500 hover:text-red-600 p-1.5 rounded-lg hover:bg-red-500/10 transition-colors"
+                              >
+                                <X className="h-4 w-4" />
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
 
                   <div className="flex flex-wrap items-center gap-3 mt-4 pt-4 border-t border-border">
