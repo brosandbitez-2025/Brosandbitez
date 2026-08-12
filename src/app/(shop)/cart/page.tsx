@@ -61,10 +61,15 @@ export default function CartPage() {
 
     orderText += `*Order Items:*\n`;
     items.forEach((item) => {
-      orderText += `${item.quantity}x ${item.name} - ₹${(item.price * item.quantity).toFixed(2)}\n`;
+      let addonText = "";
+      if (item.addons && item.addons.length > 0) {
+        addonText = `\n  Add-ons: ${item.addons.map(a => a.name).join(', ')}`;
+      }
+      orderText += `${item.quantity}x ${item.name} - ₹${(item.price * item.quantity).toFixed(2)}${addonText}\n`;
     });
     
-    orderText += `\n*Total: ₹${totalPrice.toFixed(2)}*`;
+    orderText += `\n*Total: ₹${totalPrice.toFixed(2)}*\n\n`;
+    orderText += `*Important Note:* Delivery charges are not included in the total and will be added based on your delivery distance.`;
     
     // Clean up the number by removing spaces, plus signs, etc for the wa.me link
     const cleanNumber = whatsappNumber.replace(/[^0-9]/g, '');
@@ -110,7 +115,7 @@ export default function CartPage() {
       <div className="space-y-4">
         {items.map((item, index) => (
           <motion.div 
-            key={item.id}
+            key={item.cartItemId}
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: index * 0.1 }}
@@ -127,10 +132,17 @@ export default function CartPage() {
             
             <div className="flex-1 flex flex-col justify-between h-full py-1">
               <div className="flex justify-between items-start gap-2">
-                <h3 className="font-bold leading-tight line-clamp-2">{item.name}</h3>
+                <div>
+                  <h3 className="font-bold leading-tight line-clamp-2">{item.name}</h3>
+                  {item.addons && item.addons.length > 0 && (
+                    <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">
+                      + {item.addons.map(a => a.name).join(', ')}
+                    </p>
+                  )}
+                </div>
                 <button 
-                  onClick={() => removeItem(item.id)}
-                  className="text-red-500 bg-red-500/10 p-2 rounded-xl hover:bg-red-500 hover:text-white transition-colors"
+                  onClick={() => removeItem(item.cartItemId)}
+                  className="text-red-500 bg-red-500/10 p-2 rounded-xl hover:bg-red-500 hover:text-white transition-colors flex-shrink-0"
                 >
                   <Trash2 className="h-4 w-4" />
                 </button>
@@ -141,14 +153,14 @@ export default function CartPage() {
                 
                 <div className="flex items-center gap-3 bg-secondary rounded-full px-1 py-1 h-9">
                   <button 
-                    onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                    onClick={() => updateQuantity(item.cartItemId, item.quantity - 1)}
                     className="h-7 w-7 rounded-full bg-background flex items-center justify-center shadow-sm font-bold hover:bg-primary hover:text-black transition-colors"
                   >
                     -
                   </button>
                   <span className="text-sm font-bold min-w-[12px] text-center">{item.quantity}</span>
                   <button 
-                    onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                    onClick={() => updateQuantity(item.cartItemId, item.quantity + 1)}
                     className="h-7 w-7 rounded-full bg-background flex items-center justify-center shadow-sm font-bold hover:bg-primary hover:text-black transition-colors"
                   >
                     +

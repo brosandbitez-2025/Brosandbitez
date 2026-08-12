@@ -2,17 +2,19 @@ import { create } from "zustand";
 
 export interface CartItem {
   id: string;
+  cartItemId: string;
   name: string;
   price: number;
   quantity: number;
   imageUrl: string;
+  addons?: { name: string; price: number }[];
 }
 
 interface CartStore {
   items: CartItem[];
   addItem: (item: CartItem) => void;
-  removeItem: (id: string) => void;
-  updateQuantity: (id: string, quantity: number) => void;
+  removeItem: (cartItemId: string) => void;
+  updateQuantity: (cartItemId: string, quantity: number) => void;
   clearCart: () => void;
   getTotalPrice: () => number;
   getTotalItems: () => number;
@@ -22,30 +24,30 @@ export const useCartStore = create<CartStore>((set, get) => ({
   items: [],
   addItem: (item) => {
     set((state) => {
-      const existingItem = state.items.find((i) => i.id === item.id);
+      const existingItem = state.items.find((i) => i.cartItemId === item.cartItemId);
       if (existingItem) {
         return {
           items: state.items.map((i) =>
-            i.id === item.id ? { ...i, quantity: i.quantity + item.quantity } : i
+            i.cartItemId === item.cartItemId ? { ...i, quantity: i.quantity + item.quantity } : i
           ),
         };
       }
       return { items: [...state.items, item] };
     });
   },
-  removeItem: (id) => {
+  removeItem: (cartItemId) => {
     set((state) => ({
-      items: state.items.filter((i) => i.id !== id),
+      items: state.items.filter((i) => i.cartItemId !== cartItemId),
     }));
   },
-  updateQuantity: (id, quantity) => {
+  updateQuantity: (cartItemId, quantity) => {
     set((state) => {
       if (quantity <= 0) {
-        return { items: state.items.filter((i) => i.id !== id) };
+        return { items: state.items.filter((i) => i.cartItemId !== cartItemId) };
       }
       return {
         items: state.items.map((i) =>
-          i.id === id ? { ...i, quantity } : i
+          i.cartItemId === cartItemId ? { ...i, quantity } : i
         ),
       };
     });
