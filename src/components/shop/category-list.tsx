@@ -44,7 +44,7 @@ export function CategoryList({ selectedCategoryId, onSelectCategory }: CategoryL
 
   if (isLoading) {
     return (
-      <div className="w-full py-6 px-4 sticky top-16 z-40 glass border-b border-border/50">
+      <div className="w-full pt-2 pb-6 px-4">
         <div className="flex gap-4 overflow-hidden">
           {[1, 2, 3, 4, 5].map((i) => (
             <div key={i} className="flex flex-col items-center gap-2">
@@ -58,7 +58,7 @@ export function CategoryList({ selectedCategoryId, onSelectCategory }: CategoryL
   }
 
   return (
-    <div className="w-full overflow-x-auto hide-scrollbar py-6 px-4 sticky top-[72px] z-40 glass border-b border-border/50">
+    <div className="w-full overflow-x-auto hide-scrollbar pt-2 pb-6 px-4">
       <div className="flex gap-4 w-max">
         <motion.button
           whileTap={{ scale: 0.95 }}
