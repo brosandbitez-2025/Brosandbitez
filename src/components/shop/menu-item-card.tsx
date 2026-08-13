@@ -105,7 +105,7 @@ export function MenuItemCard({ item, onImageClick, isLast }: MenuItemProps) {
 
   return (
     <>
-      <div
+      <article
         className={`flex items-center justify-between py-4 group transition-colors ${
           !isLast ? "border-b border-black/10 dark:border-white/10" : ""
         }`}
@@ -191,7 +191,7 @@ export function MenuItemCard({ item, onImageClick, isLast }: MenuItemProps) {
             ) : null}
           </div>
         </motion.div>
-      </div>
+      </article>
 
       <AnimatePresence>
         {isModalOpen && item.addons && (

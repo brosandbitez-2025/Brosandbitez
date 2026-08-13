@@ -11,7 +11,7 @@ export default function ShopPage() {
   const [searchQuery, setSearchQuery] = React.useState("");
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <main className="flex flex-col min-h-screen">
       <BannerCarousel />
 
       <div className="sticky top-[72px] z-40 glass border-b border-border/50 flex flex-col pt-4">
@@ -38,6 +38,6 @@ export default function ShopPage() {
         selectedCategoryId={selectedCategoryId} 
         searchQuery={searchQuery}
       />
-    </div>
+    </main>
   );
 }
