@@ -3,7 +3,7 @@
 import * as React from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, X } from "lucide-react";
+import { Plus, X, Utensils } from "lucide-react";
 import { useCartStore } from "@/store/cartStore";
 
 interface MenuItemProps {
@@ -13,7 +13,7 @@ interface MenuItemProps {
     description: string;
     price: number;
     offerPrice: number | null;
-    image: string;
+    image?: string;
     isVeg: boolean;
     isNonVeg?: boolean;
     isEgg?: boolean;
@@ -162,19 +162,23 @@ export function MenuItemCard({ item, onImageClick, isLast }: MenuItemProps) {
         </div>
 
         <motion.div 
-          whileTap={{ scale: 0.95 }}
-          onClick={() => onImageClick(item.image)}
-          className="relative h-20 w-20 sm:h-24 sm:w-24 rounded-2xl overflow-hidden shrink-0 bg-secondary shadow-sm cursor-pointer"
+          whileTap={item.image ? { scale: 0.95 } : undefined}
+          onClick={() => item.image && onImageClick(item.image)}
+          className={`relative h-20 w-20 sm:h-24 sm:w-24 rounded-2xl overflow-hidden shrink-0 bg-secondary shadow-sm ${item.image ? 'cursor-pointer' : 'flex items-center justify-center'}`}
         >
-          <Image
-            src={item.image}
-            alt={item.name}
-            fill
-            className={`object-cover transition-transform duration-500 group-hover:scale-110 ${
-              item.isAvailable === false ? "grayscale opacity-70" : ""
-            }`}
-            sizes="(max-width: 768px) 33vw, 20vw"
-          />
+          {item.image ? (
+            <Image
+              src={item.image}
+              alt={item.name}
+              fill
+              className={`object-cover transition-transform duration-500 group-hover:scale-110 ${
+                item.isAvailable === false ? "grayscale opacity-70" : ""
+              }`}
+              sizes="(max-width: 768px) 33vw, 20vw"
+            />
+          ) : (
+            <Utensils className="h-8 w-8 text-muted-foreground opacity-30" />
+          )}
           <div className="absolute top-1 right-1">
             {item.isNonVeg ? (
               <span className="h-3 w-3 border border-red-600 bg-red-100 flex items-center justify-center p-[2px]">

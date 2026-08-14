@@ -3,7 +3,7 @@
 import * as React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { ShoppingCart, Trash2, ArrowRight, MessageCircle } from "lucide-react";
+import { ShoppingCart, Trash2, ArrowRight, MessageCircle, Utensils } from "lucide-react";
 import { useCartStore } from "@/store/cartStore";
 import Link from "next/link";
 import { doc, getDoc } from "firebase/firestore";
@@ -121,13 +121,17 @@ export default function CartPage() {
             transition={{ delay: index * 0.1 }}
             className="glass-card p-4 rounded-3xl flex gap-4 items-center"
           >
-            <div className="relative h-20 w-20 rounded-2xl overflow-hidden shrink-0 bg-secondary">
-              <Image 
-                src={item.imageUrl} 
-                alt={item.name} 
-                fill 
-                className="object-cover"
-              />
+            <div className={`relative h-20 w-20 rounded-2xl overflow-hidden shrink-0 bg-secondary ${!item.imageUrl ? 'flex items-center justify-center' : ''}`}>
+              {item.imageUrl ? (
+                <Image 
+                  src={item.imageUrl} 
+                  alt={item.name} 
+                  fill 
+                  className="object-cover"
+                />
+              ) : (
+                <Utensils className="h-8 w-8 text-muted-foreground opacity-30" />
+              )}
             </div>
             
             <div className="flex-1 flex flex-col justify-between h-full py-1">

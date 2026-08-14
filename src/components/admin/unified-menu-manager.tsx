@@ -290,8 +290,8 @@ export function UnifiedMenuManager() {
 
   const handleAddItem = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!itemName || !itemPrice || !itemCategoryId || (!itemImageFile && !itemImageUrlInput)) {
-      alert("Please fill all required fields and provide an image.");
+    if (!itemName || !itemPrice || !itemCategoryId) {
+      alert("Please fill all required fields.");
       return;
     }
     
