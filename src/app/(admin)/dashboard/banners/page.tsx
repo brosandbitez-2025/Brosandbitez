@@ -74,14 +74,21 @@ export default function BannersPage() {
 
       // Only upload to Firebase Storage if they actually selected a file
       if (newImageFile && !imageUrlInput) {
-        const compressedFile = await imageCompression(newImageFile, {
-          maxSizeMB: 0.3,
-          maxWidthOrHeight: 1200,
-          useWebWorker: false,
-        });
+        let fileToUpload: File | Blob = newImageFile;
+        let fileName = newImageFile.name;
 
-        const storageRef = ref(storage, `banners/${Date.now()}_${compressedFile.name}`);
-        await uploadBytes(storageRef, compressedFile);
+        // Skip compression for GIFs to preserve animation
+        if (newImageFile.type !== "image/gif") {
+          fileToUpload = await imageCompression(newImageFile, {
+            maxSizeMB: 0.3,
+            maxWidthOrHeight: 1200,
+            useWebWorker: false,
+          });
+          fileName = (fileToUpload as File).name || newImageFile.name;
+        }
+
+        const storageRef = ref(storage, `banners/${Date.now()}_${fileName}`);
+        await uploadBytes(storageRef, fileToUpload);
         finalImageUrl = await getDownloadURL(storageRef);
       }
 
@@ -173,7 +180,7 @@ export default function BannersPage() {
                       <p className="mb-2 text-sm text-muted-foreground">
                         <span className="font-semibold">Click to upload</span> or drag and drop
                       </p>
-                      <p className="text-xs text-muted-foreground">PNG, JPG, or WEBP (Max 5MB)</p>
+                      <p className="text-xs text-muted-foreground">PNG, JPG, WEBP, or GIF (Max 5MB)</p>
                     </div>
                   )}
                   <input 
