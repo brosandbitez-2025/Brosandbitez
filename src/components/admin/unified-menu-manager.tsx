@@ -82,10 +82,11 @@ export function UnifiedMenuManager() {
   const isFormOpen = !!isAddingCategory || !!isAddingItem || !!editingCatId || !!editingItemId;
 
   const handleReorderCategories = async (newOrder: Category[]) => {
-    setCategories(newOrder);
+    const updatedOrder = newOrder.map((cat, index) => ({ ...cat, sortOrder: index }));
+    setCategories(updatedOrder);
     try {
       const batch = writeBatch(db);
-      newOrder.forEach((cat, index) => {
+      updatedOrder.forEach((cat, index) => {
         batch.update(doc(db, "categories", cat.id), { sortOrder: index });
       });
       await batch.commit();
@@ -95,14 +96,15 @@ export function UnifiedMenuManager() {
   };
 
   const handleReorderItems = async (newOrder: MenuItem[], categoryId: string) => {
+    const updatedNewOrder = newOrder.map((item, index) => ({ ...item, sortOrder: index }));
     setItems((prevItems) => {
       const otherItems = prevItems.filter((i) => i.categoryId !== categoryId);
-      return [...otherItems, ...newOrder];
+      return [...otherItems, ...updatedNewOrder];
     });
 
     try {
       const batch = writeBatch(db);
-      newOrder.forEach((item, index) => {
+      updatedNewOrder.forEach((item, index) => {
         batch.update(doc(db, "menuItems", item.id), { sortOrder: index });
       });
       await batch.commit();
