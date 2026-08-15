@@ -18,6 +18,7 @@ interface MenuItemProps {
     isNonVeg?: boolean;
     isEgg?: boolean;
     isBestSeller?: boolean;
+    isSpicy?: boolean;
     isAvailable: boolean;
     addons?: { name: string; price: number }[];
   };
@@ -111,11 +112,18 @@ export function MenuItemCard({ item, onImageClick, isLast }: MenuItemProps) {
         }`}
       >
         <div className="flex flex-col flex-1 pr-4">
-          {item.isBestSeller && (
-            <div className="mb-1.5">
-              <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/10 border border-primary/20 px-1.5 py-0.5 rounded shadow-sm">
-                <span className="text-[10px]">⭐</span> Bestseller
-              </span>
+          {(item.isBestSeller || item.isSpicy) && (
+            <div className="mb-1.5 flex gap-2 flex-wrap">
+              {item.isBestSeller && (
+                <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/10 border border-primary/20 px-1.5 py-0.5 rounded shadow-sm">
+                  <span className="text-[10px]">⭐</span> Bestseller
+                </span>
+              )}
+              {item.isSpicy && (
+                <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-orange-700 bg-orange-100 border border-orange-200 px-1.5 py-0.5 rounded shadow-sm">
+                  <span className="text-[10px]">🌶️</span> Spicy
+                </span>
+              )}
             </div>
           )}
           <h3 className="font-bold text-base text-foreground mb-1 leading-tight line-clamp-2">

@@ -28,6 +28,7 @@ interface MenuItem {
   isNonVeg?: boolean;
   isEgg?: boolean;
   isBestSeller?: boolean;
+  isSpicy?: boolean;
   isAvailable?: boolean;
   sortOrder?: number;
   addons?: { name: string, price: number }[];
@@ -69,6 +70,7 @@ export function UnifiedMenuManager() {
   const [itemNonVeg, setItemNonVeg] = React.useState(false);
   const [itemEgg, setItemEgg] = React.useState(false);
   const [itemBestSeller, setItemBestSeller] = React.useState(false);
+  const [itemSpicy, setItemSpicy] = React.useState(false);
   const [itemAvailable, setItemAvailable] = React.useState(true);
   const [isUploadingItem, setIsUploadingItem] = React.useState(false);
   const [itemAddons, setItemAddons] = React.useState<{name: string, price: number}[]>([]);
@@ -324,6 +326,7 @@ export function UnifiedMenuManager() {
           isNonVeg: itemNonVeg,
           isEgg: itemEgg,
           isBestSeller: itemBestSeller,
+          isSpicy: itemSpicy,
           isAvailable: itemAvailable,
           addons: itemAddons
         }));
@@ -338,6 +341,7 @@ export function UnifiedMenuManager() {
           isNonVeg: itemNonVeg,
           isEgg: itemEgg,
           isBestSeller: itemBestSeller,
+          isSpicy: itemSpicy,
           isAvailable: itemAvailable,
           sortOrder: items.filter(i => i.categoryId === itemCategoryId).length,
           addons: itemAddons
@@ -355,6 +359,7 @@ export function UnifiedMenuManager() {
       setItemNonVeg(false);
       setItemEgg(false);
       setItemBestSeller(false);
+      setItemSpicy(false);
       setItemAvailable(true);
       setItemAddons([]);
       setIsAddingItem(false);
@@ -382,6 +387,7 @@ export function UnifiedMenuManager() {
     setItemNonVeg(item.isNonVeg || false);
     setItemEgg(item.isEgg || false);
     setItemBestSeller(item.isBestSeller || false);
+    setItemSpicy(item.isSpicy || false);
     setItemAvailable(item.isAvailable !== false);
     setItemAddons(item.addons || []);
     setIsAddingItem(true);
@@ -458,7 +464,10 @@ export function UnifiedMenuManager() {
                 setItemImagePreview(null);
                 setItemImageFile(null);
                 setItemVeg(false);
+                setItemNonVeg(false);
+                setItemEgg(false);
                 setItemBestSeller(false);
+                setItemSpicy(false);
                 setItemAvailable(true);
                 setItemAddons([]);
                 setNewAddonName("");
@@ -724,7 +733,15 @@ export function UnifiedMenuManager() {
                       onClick={() => setItemBestSeller(!itemBestSeller)}
                       className={`px-4 py-2.5 rounded-xl font-bold text-sm transition-all flex items-center gap-2 border-2 ${itemBestSeller ? 'bg-primary/10 text-primary-foreground border-primary shadow-sm' : 'bg-secondary/30 text-muted-foreground border-transparent hover:bg-secondary/80'}`}
                     >
-                      <span className="text-base leading-none">⭐</span> Best Seller
+                      <span className="text-sm">Bestseller</span>
+                    </button>
+                    <button 
+                      type="button" 
+                      onClick={() => setItemSpicy(!itemSpicy)}
+                      className={`px-4 py-2.5 rounded-xl font-bold text-sm transition-all flex items-center gap-2 border-2 ${itemSpicy ? 'bg-orange-100 text-orange-700 border-orange-500 shadow-sm' : 'bg-secondary/30 text-muted-foreground border-transparent hover:bg-secondary/80'}`}
+                    >
+                      <span className="text-lg leading-none">🌶️</span>
+                      <span className="text-sm">Spicy</span>
                     </button>
                   </div>
                 </div>
@@ -855,6 +872,16 @@ export function UnifiedMenuManager() {
                                   )}
                                   {item.isVeg && (
                                     <div className="absolute top-1 right-1 h-3 w-3 bg-green-500 rounded-full border border-white shadow-sm" />
+                                  )}
+                                  {item.isBestSeller && (
+                                    <div className="flex items-center gap-1 bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border border-yellow-200">
+                                      <span>⭐ Bestseller</span>
+                                    </div>
+                                  )}
+                                  {item.isSpicy && (
+                                    <div className="flex items-center gap-1 bg-orange-100 text-orange-800 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border border-orange-200">
+                                      <span>🌶️ Spicy</span>
+                                    </div>
                                   )}
                                 </div>
                                 <div className="flex-1 min-w-0 flex flex-col justify-between py-1">
