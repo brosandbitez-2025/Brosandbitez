@@ -74,42 +74,64 @@ export function MenuList({ selectedCategoryId, searchQuery }: MenuListProps) {
 
   return (
     <div className="px-4 py-4" id="menu">
-      <div className="flex gap-2 overflow-x-auto pb-4 hide-scrollbar mb-2 -mx-4 px-4 sm:mx-0 sm:px-0">
+      <div className="flex gap-3 overflow-x-auto pb-4 hide-scrollbar mb-4 -mx-4 px-4 sm:mx-0 sm:px-0 mt-2">
         <button 
           onClick={() => setActiveFilter("all")}
-          className={`px-4 py-1.5 rounded-full text-sm font-bold whitespace-nowrap transition-colors ${activeFilter === "all" ? "bg-black text-white dark:bg-white dark:text-black shadow-md" : "bg-black/5 dark:bg-white/10 hover:bg-black/10"}`}
+          className={`px-5 py-2.5 rounded-2xl text-sm font-bold whitespace-nowrap transition-all active:scale-95 border-2 flex items-center gap-2 ${
+            activeFilter === "all" 
+              ? "bg-foreground text-background border-foreground shadow-md shadow-black/10 dark:shadow-white/10" 
+              : "bg-background text-muted-foreground border-border hover:border-foreground/30 hover:bg-secondary/50"
+          }`}
         >
           All
         </button>
         <button 
           onClick={() => setActiveFilter("veg")}
-          className={`px-4 py-1.5 rounded-full text-sm font-bold whitespace-nowrap transition-colors flex items-center gap-1.5 ${activeFilter === "veg" ? "bg-green-600 text-white shadow-md" : "bg-black/5 dark:bg-white/10 text-green-700 dark:text-green-500 hover:bg-black/10"}`}
+          className={`px-5 py-2.5 rounded-2xl text-sm font-bold whitespace-nowrap transition-all active:scale-95 border-2 flex items-center gap-2.5 ${
+            activeFilter === "veg" 
+              ? "bg-green-50 text-green-700 border-green-500 shadow-sm shadow-green-500/20 dark:bg-green-950/30 dark:text-green-400" 
+              : "bg-background text-muted-foreground border-border hover:border-green-500/30 hover:bg-green-50/50 dark:hover:bg-green-950/10"
+          }`}
         >
-          <div className={`h-2.5 w-2.5 rounded-sm border-[1.5px] flex items-center justify-center ${activeFilter === "veg" ? "border-white" : "border-green-600 dark:border-green-500"}`}>
-            <div className={`h-1 w-1 rounded-full ${activeFilter === "veg" ? "bg-white" : "bg-green-600 dark:bg-green-500"}`}></div>
+          <div className={`h-3.5 w-3.5 rounded-[3px] border-[1.5px] flex items-center justify-center ${activeFilter === "veg" ? "border-green-600 dark:border-green-400" : "border-muted-foreground"}`}>
+            <div className={`h-1.5 w-1.5 rounded-full ${activeFilter === "veg" ? "bg-green-600 dark:bg-green-400" : "bg-transparent"}`}></div>
           </div>
           Veg
         </button>
         <button 
           onClick={() => setActiveFilter("nonveg")}
-          className={`px-4 py-1.5 rounded-full text-sm font-bold whitespace-nowrap transition-colors flex items-center gap-1.5 ${activeFilter === "nonveg" ? "bg-red-600 text-white shadow-md" : "bg-black/5 dark:bg-white/10 text-red-700 dark:text-red-500 hover:bg-black/10"}`}
+          className={`px-5 py-2.5 rounded-2xl text-sm font-bold whitespace-nowrap transition-all active:scale-95 border-2 flex items-center gap-2.5 ${
+            activeFilter === "nonveg" 
+              ? "bg-red-50 text-red-700 border-red-500 shadow-sm shadow-red-500/20 dark:bg-red-950/30 dark:text-red-400" 
+              : "bg-background text-muted-foreground border-border hover:border-red-500/30 hover:bg-red-50/50 dark:hover:bg-red-950/10"
+          }`}
         >
-          <div className={`h-2.5 w-2.5 rounded-sm border-[1.5px] flex items-center justify-center ${activeFilter === "nonveg" ? "border-white" : "border-red-600 dark:border-red-500"}`}>
-            <div className={`h-1 w-1 rounded-full ${activeFilter === "nonveg" ? "bg-white" : "bg-red-600 dark:bg-red-500"}`}></div>
+          <div className={`h-3.5 w-3.5 rounded-[3px] border-[1.5px] flex items-center justify-center ${activeFilter === "nonveg" ? "border-red-600 dark:border-red-400" : "border-muted-foreground"}`}>
+            <div className={`h-1.5 w-1.5 rounded-full ${activeFilter === "nonveg" ? "bg-red-600 dark:bg-red-400" : "bg-transparent"}`}></div>
           </div>
           Non-Veg
         </button>
         <button 
           onClick={() => setActiveFilter("spicy")}
-          className={`px-4 py-1.5 rounded-full text-sm font-bold whitespace-nowrap transition-colors flex items-center gap-1.5 ${activeFilter === "spicy" ? "bg-orange-600 text-white shadow-md" : "bg-black/5 dark:bg-white/10 text-orange-700 dark:text-orange-500 hover:bg-black/10"}`}
+          className={`px-5 py-2.5 rounded-2xl text-sm font-bold whitespace-nowrap transition-all active:scale-95 border-2 flex items-center gap-2 ${
+            activeFilter === "spicy" 
+              ? "bg-orange-50 text-orange-700 border-orange-500 shadow-sm shadow-orange-500/20 dark:bg-orange-950/30 dark:text-orange-400" 
+              : "bg-background text-muted-foreground border-border hover:border-orange-500/30 hover:bg-orange-50/50 dark:hover:bg-orange-950/10"
+          }`}
         >
-          <span className="text-[12px]">🌶️</span> Spicy
+          <span className="text-base leading-none">🌶️</span>
+          Spicy
         </button>
         <button 
           onClick={() => setActiveFilter("bestseller")}
-          className={`px-4 py-1.5 rounded-full text-sm font-bold whitespace-nowrap transition-colors flex items-center gap-1.5 ${activeFilter === "bestseller" ? "bg-yellow-500 text-white shadow-md" : "bg-black/5 dark:bg-white/10 text-yellow-700 dark:text-yellow-500 hover:bg-black/10"}`}
+          className={`px-5 py-2.5 rounded-2xl text-sm font-bold whitespace-nowrap transition-all active:scale-95 border-2 flex items-center gap-2 ${
+            activeFilter === "bestseller" 
+              ? "bg-yellow-50 text-yellow-700 border-yellow-500 shadow-sm shadow-yellow-500/20 dark:bg-yellow-950/30 dark:text-yellow-400" 
+              : "bg-background text-muted-foreground border-border hover:border-yellow-500/30 hover:bg-yellow-50/50 dark:hover:bg-yellow-950/10"
+          }`}
         >
-          <span className="text-[12px]">⭐</span> Bestseller
+          <span className="text-base leading-none">⭐</span>
+          Bestseller
         </button>
       </div>
 
